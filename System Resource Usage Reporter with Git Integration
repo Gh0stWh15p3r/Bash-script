@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Function to display system resource usage
+display_usage() {
+    echo "Usage: $0"
+    echo "Displays system resource usage including CPU, memory, and disk."
+}
+
+# Function to display CPU usage
+display_cpu_usage() {
+    echo "CPU Usage:"
+    top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1"%"}'
+}
+
+# Function to display memory usage
+display_memory_usage() {
+    echo "Memory Usage:"
+    free -m | awk 'NR==2{printf "Used: %.2fMB (%.2f%%), Free: %.2fMB\n", $3/1024, $3/$2*100, $4/1024}'
+}
+
+# Function to display disk usage
+display_disk_usage() {
+    echo "Disk Usage:"
+    df -h | grep -E "/dev/sda[0-9]+" | awk '{print "Usage on " $6 ": " $5 " full"}'
+}
+
+# Check if user provided any arguments
+if [[ $# -ne 0 ]]; then
+    display_usage
+    exit 1
+fi
+
+# Main function to display system resource usage
+main() {
+    display_cpu_usage
+    display_memory_usage
+    display_disk_usage
+}
+
+# Call the main function
+main
+
+# Initialize Git repository
+echo "# Bash-script" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Gh0stWh15p3r/Bash-script.git
+git push -u origin main
