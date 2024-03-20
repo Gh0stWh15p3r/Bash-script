@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Function to list files and directories
+list_files() {
+    echo "Listing files and directories:"
+    ls -l
+}
+
+# Function to create a directory
+create_directory() {
+    echo "Enter directory name:"
+    read dirname
+    mkdir "$dirname" && echo "Directory '$dirname' created successfully."
+}
+
+# Function to create a file
+create_file() {
+    echo "Enter file name:"
+    read filename
+    touch "$filename" && echo "File '$filename' created successfully."
+}
+
+# Function to delete a file or directory
+delete_item() {
+    echo "Enter the name of the file or directory to delete:"
+    read itemname
+    rm -r "$itemname" && echo "'$itemname' deleted successfully."
+}
+
+# Function to move a file or directory
+move_item() {
+    echo "Enter the name of the file or directory to move:"
+    read itemname
+    echo "Enter the destination directory:"
+    read destdir
+    mv "$itemname" "$destdir" && echo "'$itemname' moved to '$destdir' successfully."
+}
+
+# Function for Git integration
+git_integration() {
+    # Initialize Git repository
+    git init
+    git add .
+    git commit -m "Initial commit"
+    git branch -M main
+    echo "Enter your GitHub repository URL:"
+    read github_url
+    git remote add origin "$github_url"
+    git push -u origin main
+}
+
+# Main function
+main() {
+    while true; do
+        echo "Choose an option:"
+        echo "1. List files and directories"
+        echo "2. Create a directory"
+        echo "3. Create a file"
+        echo "4. Delete a file or directory"
+        echo "5. Move a file or directory"
+        echo "6. Initialize Git repository and push to GitHub"
+        echo "7. Exit"
+
+        read choice
+
+        case $choice in
+            1) list_files ;;
+            2) create_directory ;;
+            3) create_file ;;
+            4) delete_item ;;
+            5) move_item ;;
+            6) git_integration ;;
+            7) echo "Exiting..."; exit ;;
+            *) echo "Invalid choice. Please enter a number between 1 and 7." ;;
+        esac
+    done
+}
+
+# Call the main function
+main
